@@ -7,6 +7,11 @@ class TasksController < ApplicationController
   end
 
   def show
+    if @task
+      render :show
+    else 
+      redirect_to tasks_url
+    end
   end
 
   def new
@@ -48,13 +53,12 @@ class TasksController < ApplicationController
  private
   
   def set_task
-    @task = Task.find(params[:id])
-    if @task == current_user.tasks.find(params[:id])
-    else 
-      redirect_to root_url
+    @task = current_user.tasks.find_by(id: params[:id])
+    if @task
+    else
+      redirect_to tasks_url
     end
   end
-
 
   # Strong Parameter
   def task_params
